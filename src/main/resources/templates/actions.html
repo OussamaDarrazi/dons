@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{base.html}"
+>
+  <head>
+    <title layout:fragment="title">Actions</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <div layout:fragment="content">
+      <div class="container mx-auto bg-white p-6 rounded-lg shadow-lg">
+        <h1 class="text-2xl font-bold mb-4">Actions</h1>
+        <div th:if="${#lists.isEmpty(actions)}" class="text-center">
+          <p class="text-gray-500">No actions yet</p>
+        </div>
+        <div th:unless="${#lists.isEmpty(actions)}">
+          <table class="min-w-full bg-white border border-gray-200">
+            <thead>
+              <tr class="bg-gray-100">
+                <th class="py-2 px-4 border-b">ID</th>
+                <th class="py-2 px-4 border-b">Title</th>
+                <th class="py-2 px-4 border-b">Description</th>
+                <th class="py-2 px-4 border-b">Creation Date</th>
+                <th class="py-2 px-4 border-b">Target</th>
+                <th class="py-2 px-4 border-b">Status</th>
+                <th class="py-2 px-4 border-b">Organisation</th>
+                <th class="py-2 px-4 border-b">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="action : ${actions}" class="hover:bg-gray-50">
+                <td class="py-2 px-4 border-b" th:text="${action.id}">ID</td>
+                <td class="py-2 px-4 border-b">
+                  <a
+                    th:href="@{/actions/{id}/donations(id=${action.id})}"
+                    th:text="${action.title}"
+                    class="text-blue-600 underline hover:text-blue-800"
+                    >Title</a
+                  >
+                </td>
+                <td class="py-2 px-4 border-b" th:text="${action.description}">
+                  Description
+                </td>
+                <td
+                  class="py-2 px-4 border-b"
+                  th:text="${#dates.format(action.creationDate, 'yyyy-MM-dd')}"
+                >
+                  Creation Date
+                </td>
+                <td class="py-2 px-4 border-b" th:text="${action.target}">
+                  Target
+                </td>
+                <td class="py-2 px-4 border-b">
+                  <span
+                    th:text="${action.status}"
+                    th:classappend="
+                      ${action.status == 'PREPARATION'} ? 'text-yellow-500' :
+                      ${action.status == 'OUVERTE'} ? 'text-green-500' :
+                      ${action.status == 'SUSPENDUE'} ? 'text-red-500' :
+                      ${action.status == 'TERMINEE'} ? 'text-gray-500' : ''"
+                  >
+                    Status
+                  </span>
+                </td>
+                <td
+                  class="py-2 px-4 border-b"
+                  th:text="${action.organisation.name}"
+                >
+                  Organisation
+                </td>
+                <td class="py-2 px-4 border-b">
+                  <a
+                    th:href="@{/actions/delete/{id}(id=${action.id})}"
+                    class="text-red-600 underline hover:text-red-800"
+                    >Delete</a
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+  </body>
+</html>

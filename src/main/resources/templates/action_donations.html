@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{base.html}"
+>
+  <head>
+    <title layout:fragment="title">Home Page</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <div layout:fragment="content">
+      <div class="container mx-auto bg-white p-6 rounded-lg shadow-lg">
+        <h1 class="text-2xl font-bold mb-4">
+          Donations for Action:
+          <span th:text="${actChar.title}">Action Title</span> (ID:
+          <span th:text="${actChar.id}">Action ID</span>)
+        </h1>
+        <p class="mb-2">
+          Status:
+          <span th:text="${actChar.status}" class="font-semibold">Status</span>
+        </p>
+        <p class="mb-4">
+          Total Donations:
+          <span th:text="${totalDonations}" class="font-semibold">0</span> /
+          <span th:text="${actChar.target}" class="font-semibold">0</span>
+        </p>
+        <div class="w-full bg-gray-200 rounded-full h-4 mb-4">
+          <div
+            class="bg-blue-600 h-4 rounded-full"
+            th:style="'width:' + (${totalDonations} / ${actChar.target}) * 100 + '%'"
+          ></div>
+        </div>
+        <div th:if="${#lists.isEmpty(donations)}" class="text-center">
+          <p class="text-gray-500">No donations yet</p>
+        </div>
+        <div th:unless="${#lists.isEmpty(donations)}">
+          <table class="min-w-full bg-white border border-gray-200">
+            <thead>
+              <tr class="bg-gray-100">
+                <th class="py-2 px-4 border-b">ID</th>
+                <th class="py-2 px-4 border-b">Title</th>
+                <th class="py-2 px-4 border-b">Amount</th>
+                <th class="py-2 px-4 border-b">Type</th>
+                <th class="py-2 px-4 border-b">Donator</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="donation : ${donations}" class="hover:bg-gray-50">
+                <td class="py-2 px-4 border-b" th:text="${donation.id}">ID</td>
+                <td class="py-2 px-4 border-b" th:text="${donation.title}">
+                  Title
+                </td>
+                <td class="py-2 px-4 border-b" th:text="${donation.amount}">
+                  Amount
+                </td>
+                <td class="py-2 px-4 border-b" th:text="${donation.type}">
+                  Type
+                </td>
+                <td
+                  class="py-2 px-4 border-b"
+                  th:text="${donation.donator.firstName + ' ' + donation.donator.lastName}"
+                >
+                  Donator
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+  </body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{base.html}"
+>
+  <head>
+    <title layout:fragment="title">Home Page</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <div layout:fragment="content">
+      <div class="container mx-auto bg-white p-6 rounded-lg shadow-lg">
+        <h1 class="text-2xl font-bold mb-4">Add Donation</h1>
+        <form
+          th:action="@{/donations}"
+          th:object="${donation}"
+          method="post"
+          class="space-y-4"
+        >
+          <div>
+            <label for="title" class="block text-sm font-medium text-gray-700"
+              >Title:</label
+            >
+            <input
+              type="text"
+              id="title"
+              th:field="*{title}"
+              required
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            />
+          </div>
+          <div>
+            <label for="amount" class="block text-sm font-medium text-gray-700"
+              >Amount:</label
+            >
+            <input
+              type="number"
+              id="amount"
+              th:field="*{amount}"
+              step="0.01"
+              required
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            />
+          </div>
+          <div>
+            <label for="type" class="block text-sm font-medium text-gray-700"
+              >Type:</label
+            >
+            <select
+              id="type"
+              th:field="*{type}"
+              required
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            >
+              <option
+                th:each="type : ${T(com.tbs.dons.types.DonationType).values()}"
+                th:value="${type}"
+                th:text="${type}"
+              >
+                Type
+              </option>
+            </select>
+          </div>
+          <div>
+            <label for="donator" class="block text-sm font-medium text-gray-700"
+              >Donator:</label
+            >
+            <select
+              id="donator"
+              th:field="*{donator.id}"
+              required
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            >
+              <option
+                th:each="donator : ${donators}"
+                th:value="${donator.id}"
+                th:text="${donator.firstName + ' ' + donator.lastName}"
+              >
+                Donator
+              </option>
+            </select>
+          </div>
+          <div>
+            <label for="actChar" class="block text-sm font-medium text-gray-700"
+              >Act of Charity:</label
+            >
+            <select
+              id="actChar"
+              th:field="*{actChar.id}"
+              required
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            >
+              <option
+                th:each="actChar : ${actsOfCharity}"
+                th:value="${actChar.id}"
+                th:text="${actChar.title}"
+              >
+                Act of Charity
+              </option>
+            </select>
+          </div>
+          <div>
+            <button
+              type="submit"
+              class="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+  </body>
+</html>
